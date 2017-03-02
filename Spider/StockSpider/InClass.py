@@ -37,6 +37,7 @@ def get_page_data(url, headers = None):
             'benefits'        : info_list[14], # 市盈率
         }
         stocks.append(stock)
+        print(stock)
 
 for url in urls:
     get_page_data(url, headers)
