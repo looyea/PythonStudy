@@ -7,10 +7,5 @@ def getMongoDB():
     workSheet = excelDocument["sheet_01"]  # 打开名字为sheet_01的文档(就是work sheet)
     return workSheet
 
-if __
-lineData = {
-    "name" : "mongo",
-    "age"  : 12
-}
 workSheet = getMongoDB()
-workSheet.insert_one(lineData)  # 向文档中插入一条数据
+# workSheet.insert_one(lineData)  # 向文档中插入一条数据
