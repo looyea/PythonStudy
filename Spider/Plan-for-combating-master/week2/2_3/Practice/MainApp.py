@@ -10,24 +10,37 @@ http://wirelesspub.xiaozhu.com/app/xzfk/html5/500/search/result?cityId=12&offset
 from multiprocessing import Pool
 from bs4 import BeautifulSoup
 import requests
+import pymongo
+
 
 def getData(url):
-    web_data = requests.get(url)
-    soup = BeautifulSoup(web_data.text,'lxml')
-    resultText = soup.p.text
-    resultText = resultText.replace("true", "True")
-    resultText = resultText.replace("false", "False")
-    resultDic = eval(resultText)
-    items = resultDic["content"]["item"]
-    for item in items:
-        print item["luTitle"].strip() + " -> " + item["luLeaseType"].strip() + " -> " + item["displayAddr"].strip() + " : " + str(item["luPrice"])
+    try:
+        web_data = requests.get(url)
+        soup = BeautifulSoup(web_data.text,'lxml')
+        resultText = soup.p.text
+        resultText = resultText.replace("true", "True")
+        resultText = resultText.replace("false", "False")
+        resultDic = eval(resultText)
+        items = resultDic["content"]["item"]
+        for item in items:
+            sheet.insert_one(item)
+            # print(item["luTitle"].strip() + " -> " + item["luLeaseType"].strip() + " -> " + item["displayAddr"].strip() + " : " + str(item["luPrice"]))
+        return 1
+    except:
+        return 0
 
+client = pymongo.MongoClient("localhost", 27017)
+document = client["xiaozhu"]
+sheet = document["bj_duanzu"]
 
-
-urls = ["http://wirelesspub.xiaozhu.com/app/xzfk/html5/500/search/result?cityId=12&offset={}&length=5".format(str(i) ) for i in range(0,11) ]
+urls = ["http://wirelesspub.xiaozhu.com/app/xzfk/html5/500/search/result?cityId=12&offset={}&length=10".format(str(i) ) for i in range(0,500, 10) ]
 
 for url in urls:
-    getData(url)
+    ret = getData(url)
+    if ret == 0 :
+        break
+    else:
+        continue
 
 # getData("http://wirelesspub.xiaozhu.com/app/xzfk/html5/500/search/result?cityId=12&offset=0&length=1")
 
