@@ -1,6 +1,8 @@
 # _*_ coding:utf-8 _*_
 import pymongo
 import re
+import sys
+
 
 def getMongoDB():
     localClient = pymongo.MongoClient('localhost', 27017)  # 连接本地数据库
@@ -8,7 +10,10 @@ def getMongoDB():
     workSheet = excelDocument["ali"]  # 打开名字为sheet_01的文档(就是work sheet)
     return workSheet
 
-pattern = re.compile(".*蚂蚁金服.*")
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+pattern = re.compile("^蚂蚁金服.*")
 workSheet = getMongoDB()
 
 datas = workSheet\
@@ -19,11 +24,23 @@ records = list()
 
 for data in datas:
     records.append(data)
-
-# for record in records:
-    # print data["name"]
-    # print data["requirement"]
-    # print data["description"]
-    # print "----------------"
-
-print len(records)
+#
+# with file("jobs.html","w+") as myFile:
+#     for record in records:
+#         myFile.write("<p>")
+#         myFile.write(data["name"])
+#         myFile.write("</p>")
+#         myFile.write("<p>")
+#         myFile.write(data["requirement"])
+#         myFile.write("</p>")
+#         myFile.write("<p>")
+#         myFile.write(data["description"])
+#         myFile.write("</p>")
+#         myFile.write("<hr/>")
+#     myFile.close()
+# #
+for record in records:
+        print(data["name"])
+        print(data["requirement"])
+        print(data["description"])
+# print len(records)
