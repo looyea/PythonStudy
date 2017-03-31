@@ -13,34 +13,27 @@ def getMongoDB():
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-pattern = re.compile("^蚂蚁金服.*")
+pattern = re.compile("^蚂蚁金服*")
 workSheet = getMongoDB()
 
 datas = workSheet\
-    .find({'departmentName':pattern},{"name":1, "requirement": 1, "description":1, "_id":0}) \
+    .find({'departmentName':{'$regex':'蚂蚁金服'}},{"name":1, "requirement": 1, "description":1, "_id":0}) \
     .limit(300)
 
 records = list()
 
-for data in datas:
-    records.append(data)
-#
-# with file("jobs.html","w+") as myFile:
-#     for record in records:
-#         myFile.write("<p>")
-#         myFile.write(data["name"])
-#         myFile.write("</p>")
-#         myFile.write("<p>")
-#         myFile.write(data["requirement"])
-#         myFile.write("</p>")
-#         myFile.write("<p>")
-#         myFile.write(data["description"])
-#         myFile.write("</p>")
-#         myFile.write("<hr/>")
-#     myFile.close()
-# #
-for record in records:
-        print(data["name"])
-        print(data["requirement"])
-        print(data["description"])
-# print len(records)
+
+with file("jobs.html","w+") as myFile:
+    for data in datas:
+        myFile.write("<p>")
+        myFile.write(data["name"])
+        myFile.write("</p>")
+        myFile.write("<p>")
+        myFile.write(data["requirement"])
+        myFile.write("</p>")
+        myFile.write("<p>")
+        myFile.write(data["description"])
+        myFile.write("</p>")
+        myFile.write("<hr/>")
+    myFile.flush()
+    myFile.close()
