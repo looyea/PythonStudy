@@ -6,11 +6,3 @@
 from Algrithm.basis.SortArrayGenerator import *
 
 sortArray = getDefaultArray(True)
-def bubbleSort(sortArray):
-    length = len(sortArray)
-
-    return sortArray
-
-sortArray = bubbleSort(sortArray)
-print(id(sortArray))
-
