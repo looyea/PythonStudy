@@ -5,14 +5,14 @@ import numpy as np
 # Test 1
 # 读取csv文件, sep指定字符串的分隔符, 默认为逗号
 data = pd.read_csv('student.csv', sep = ';')
-print data
+print(data)
 
 # Test 1 result
-   Student ID   name  age  gender
-0        1000   Jack   21    Male
-1        1001   Lucy   22  Female
-2        1002   Rose   23  Female
-3        1003  David   24    Male
+#    Student ID   name  age  gender
+# 0        1000   Jack   21    Male
+# 1        1001   Lucy   22  Female
+# 2        1002   Rose   23  Female
+# 3        1003  David   24    Male
 
 
 # Test 2
