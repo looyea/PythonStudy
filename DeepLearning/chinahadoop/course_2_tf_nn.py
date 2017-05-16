@@ -4,10 +4,10 @@
 
 
 
-from tensorflow.examples.tutorials.mnist import input_data
+from TensorFlow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets(".", one_hot=True)
 
-import tensorflow as tf
+import TensorFlow as tf
 
 # Parameters
 learning_rate = 0.001

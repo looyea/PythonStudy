@@ -6,7 +6,7 @@ basic tf operation examples,
 '''
 
 #
-import tensorflow as tf
+import TensorFlow as tf
 
 # direct sum with constand value
 a = tf.constant(2)

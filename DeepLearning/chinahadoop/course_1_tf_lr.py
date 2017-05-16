@@ -10,7 +10,7 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 '''
 
 
-import tensorflow as tf
+import TensorFlow as tf
 import numpy
 rng = numpy.random
 
