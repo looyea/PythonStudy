@@ -48,12 +48,21 @@ def htmlPaser(soup):
 
 
 for enum in enumerate(topicNos):
-    print("{:0>3}".format(enum[0]), urls[enum[0]])
-    # print(url)
-    # web_data = requests.get(url, allow_redirects=False)
-    # if web_data.status_code != 200:
-    #     continue
-    # Soup = BeautifulSoup(web_data.text, 'lxml')
-    #
-    # data = htmlPaser(Soup)
-    # pdfkit.from_string(data["content"], "D:\\" + data["title"] + ".pdf")
+    try:
+
+        url = urls[enum[0]]
+
+        web_data = requests.get(url, allow_redirects=False)
+        if web_data.status_code != 200:
+            print("Pass " + url)
+            continue
+        Soup = BeautifulSoup(web_data.text, 'lxml')
+
+        print("processing "+ url)
+        noStr = "{:0>3}".format(enum[0])
+        data = htmlPaser(Soup)
+        pdfkit.from_string(data["content"], "D:\\quanttech\\" + noStr + '_' + data["title"] + ".pdf")
+        time.sleep(1)
+    except Exception  :
+        print(Exception)
+        continue
