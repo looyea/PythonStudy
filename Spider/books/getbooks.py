@@ -33,7 +33,7 @@ save_path = "d:\\"
 for x in book_names.keys():
     pageLimit = page_limits[x]
     bookName = book_names[x]
-    print "当前处理的图书《{}》 页码{}".format(bookName, pageLimit - 1)
+    print("当前处理的图书《{}》 页码{}".format(bookName, pageLimit - 1))
 
     # 生成页面的地址
     bookPages = (url_pattern.format(x, str(i)) for i in range(1, pageLimit))
