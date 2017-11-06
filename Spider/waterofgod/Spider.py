@@ -26,7 +26,7 @@ headers = {
    "User-Agent": 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:56.0) Gecko/20100101 Firefox/56.0'
 }
 
-baseDirStr = "/media/appadmin/Work/qqcomics/546289"
+baseDirStr = "/data/Org"
 baseDirs = os.listdir(baseDirStr)
 baseDirList = ((baseDirStr + "/{}/").format(dir) for dir in baseDirs)
 
