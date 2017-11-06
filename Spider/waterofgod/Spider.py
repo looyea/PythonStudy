@@ -26,23 +26,30 @@ headers = {
    "User-Agent": 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:56.0) Gecko/20100101 Firefox/56.0'
 }
 
-baseDirStr = "/media/appadmin/Work/qqcomics/546289"
+baseDirStr = "/data/toProcess"
 baseDirs = os.listdir(baseDirStr)
-baseDirList = ((baseDirStr + "/{}/").format(dir) for dir in baseDirs)
+baseDirs.sort()
 
-for dir in baseDirList:
-    print("Start work with ", dir)
-    os.mkdir(dir + "/imgs")
-    saveDir = dir + "/imgs/"
-    files = os.listdir(dir)
+for dir in baseDirs:
+    print("Start work with ", baseDirStr, dir)
+    saveDir = baseDirStr + "/" + dir + "/" + dir
+    if os.path.exists(saveDir):
+        pass
+    else:
+        os.mkdir(saveDir)
+    files = os.listdir(baseDirStr + "/" + dir + "/")
     counter = 1
     for file in files:
-        time.sleep(1)
+        curPath = baseDirStr + "/" + dir + "/" + file
+        if os.path.isdir(curPath):
+            continue
+
         if file == "dinfo" or file == "_image_info_list" or file == "imgs":
             pass
         else:
-            url = retriveUrl(dir + file)
-            print(url)
-            finalPath = saveDir + str(counter) + ".jpg"
+            url = retriveUrl(curPath)
+            finalPath = saveDir +  "/" + str(counter) + ".jpg"
             request.urlretrieve(url, finalPath)
             counter += 1
+
+        time.sleep(0.5)
