@@ -62,7 +62,7 @@ with tf.name_scope('train'):
 
 sess = tf.Session()
 
-writer = tf.summary.FileWriter("/home/appadmin/", tf.get_default_graph())
+writer = tf.summary.FileWriter("/data/tf/", tf.get_default_graph())
 
 sess.run(tf.global_variables_initializer())
 

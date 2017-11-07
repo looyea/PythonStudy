@@ -5,5 +5,5 @@ with tf.name_scope('input1'):
 with tf.name_scope('input2'):
     input2 = tf.Variable(tf.random_uniform([3]), name="input2")
 output = tf.add_n([input1, input2], name="add")
-writer = tf.summary.FileWriter("/home/appadmin/", tf.get_default_graph())
+writer = tf.summary.FileWriter("/data/tf/", tf.get_default_graph())
 writer.close()
