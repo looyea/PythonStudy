@@ -58,7 +58,7 @@ loss = tf.reduce_mean(tf.reduce_sum(tf.square(ys - prediction), reduction_indice
 train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
 
 # 初始化变量
-init = tf.initialize_all_variables()
+init = tf.global_variables_initializer()
 
 sess = tf.Session()
 

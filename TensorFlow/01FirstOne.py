@@ -30,7 +30,7 @@ optimizer = tf.train.GradientDescentOptimizer(0.5)
 # 训练损失函数相关的内容, 目标就是最小化误差
 train = optimizer.minimize(loss)
 # 初始化所有的变量
-init = tf.initialize_all_variables()
+init = tf.global_variables_initializer()
 
 # 以上就是神经网络主要的实现过程
 
