@@ -1,16 +1,11 @@
 # _._encoding=utf-8_._
 
 import tensorflow as tf
-import cv2
-import numpy as np
-from sys import path
-
 from tensorflow.examples.tutorials.mnist import input_data
+import cv2 as cv
+import numpy as np
 
-
-
-mnist = input_data.read_data_sets("MNIST_data", one_hot=True)
-
+mnist = input_data.read_data_sets("MNIST_data", one_hot=False)
 
 def compute_accuracy(v_xs, v_ys):
     global prediction
@@ -100,29 +95,23 @@ sess.run(tf.global_variables_initializer())
 for i in range(1000):
     batch_xs, batch_ys = mnist.train.next_batch(100)
     sess.run(train_step, feed_dict={xs: batch_xs, ys: batch_ys, keep_prob: 0.5})
-    if i % 50 == 0:
-        print(compute_accuracy(
-            mnist.test.images[:1000], mnist.test.labels[:1000]))
+    # if i % 50 == 0:
+    #     print(compute_accuracy(
+    #         mnist.test.images[:1000], mnist.test.labels[:1000]))
+    if i % 200 == 0:
+        print("current batch:", i)
 
-# mnist_data_set = extract_mnist.MnistDataSet('../../data/')
-# x_img , y  = mnist_data_set.next_train_batch(1)
-im = cv2.imread('img/1.jpg', cv2.IMREAD_GRAYSCALE).astype(np.float32)
-im = cv2.resize(im, (28, 28), interpolation=cv2.INTER_CUBIC)
-# 图片预处理
-# img_gray = cv2.cvtColor(im , cv2.COLOR_BGR2GRAY).astype(np.float32)
-# 数据从0~255转为-0.5~0.5
-img_gray = (im - (255 / 2.0)) / 255
+with sess.as_default():
+    img_raw_data = tf.gfile.FastGFile('img/3.jpg', 'rb').read()
+    img_data = tf.image.decode_jpeg(img_raw_data)
+    img_data = tf.image.rgb_to_grayscale(img_data)
+    img_data = img_data.eval().reshape(1, 28, 28).reshape(1, 784)
+    img_data = tf.to_float(img_data)
+    img_data = sess.run((img_data - (255 / 2.0)) / 255)
 
-# cv2.imshow('out',img_gray)
-# cv2.waitKey(0)
+    y_pre = sess.run(prediction, feed_dict={xs: img_data, keep_prob: 1})
+    print('计算结果: ', '\n', y_pre)
+    print('辨识的数据是：', np.argmax(y_pre))
 
-x_img = np.reshape(img_gray, [-1, 784])
 
-print(x_img)
-
-output = sess.run(prediction, feed_dict={xs: x_img, ys: [0,1,0,0,0,0,0,0,0,0]})
-print('the y_con :   ', '\n', output)
-print('the predict is : ', np.argmax(output))
-
-# 关闭会话
 sess.close()

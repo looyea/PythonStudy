@@ -95,21 +95,23 @@ sess.run(tf.global_variables_initializer())
 for i in range(1000):
     batch_xs, batch_ys = mnist.train.next_batch(100)
     sess.run(train_step, feed_dict={xs: batch_xs, ys: batch_ys, keep_prob: 0.5})
-    if i % 50 == 0:
-        print(compute_accuracy(
-            mnist.test.images[:1000], mnist.test.labels[:1000]))
+    # if i % 50 == 0:
+    #     print(compute_accuracy(
+    #         mnist.test.images[:1000], mnist.test.labels[:1000]))
+    if i % 200 == 0:
+        print("current batch:", i)
 
-try:
-    im = cv.imread('img/4.jpg', cv.IMREAD_GRAYSCALE).astype(np.float32)
-    im = cv.resize(im, (28, 28), interpolation=cv.INTER_CUBIC)
-    ## img_gray = (im - (255 / 2.0)) / 255
-    x_img = np.reshape(im, [1, 784])
+with sess.as_default():
+    img_raw_data = tf.gfile.FastGFile('img/1.jpg', 'rb').read()
+    img_data = tf.image.decode_jpeg(img_raw_data)
+    img_data = tf.image.rgb_to_grayscale(img_data)
+    img_data = img_data.eval().reshape(1, 28, 28).reshape(1, 784)
+    img_data = tf.to_float(img_data)
+    img_data = sess.run(img_data - 200)
 
-    y_pre = sess.run(prediction, feed_dict={xs: x_img, keep_prob: 0.5})
+    y_pre = sess.run(prediction, feed_dict={xs: img_data, keep_prob: 1})
     print('计算结果: ', '\n', y_pre)
     print('辨识的数据是：', np.argmax(y_pre))
-except Exception:
-    print('出现问题了！！！')
-    sess.close()
+
 
 sess.close()
