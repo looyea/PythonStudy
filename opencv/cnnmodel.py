@@ -8,6 +8,7 @@ import random
 import dlib
 import sys
 from sklearn.model_selection import train_test_split
+from matplotlib import pyplot as ply
 
 my_faces_path = './my_faces'
 other_faces_path = './other_faces'
@@ -180,7 +181,7 @@ def cnnTrain():
 
                 if (n*num_batch+i) % 50 == 0:
                     # 获取测试数据的准确率
-                    acc = accuracy.eval({x:test_x, y_:test_y, keep_prob_5:1.0, keep_prob_75:1.0})
+                    acc = accuracy.eval({x: test_x, y_: test_y, keep_prob_5: 1.0, keep_prob_75:1.0})
                     print(n*num_batch+i, '当前精度', acc)
                     # 准确率大于0.98时保存并退出
                     if acc > 0.978 and n > 2:
@@ -193,7 +194,7 @@ def cnnTrain():
 
 if __name__ == '__main__':
 
-    cnnTrain()
+    # cnnTrain()
 
     output = cnnLayer()
     predict = tf.argmax(output, 1)
