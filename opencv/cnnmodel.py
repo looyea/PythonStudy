@@ -1,5 +1,10 @@
 # _._encoding=utf-8_._
-"""https://www.cnblogs.com/mu---mu/p/FaceRecognition-tensorflow.html"""
+"""
+https://www.cnblogs.com/mu---mu/p/FaceRecognition-tensorflow.html
+说是这样，但是实际效果，因为镜头畸变等问题，并不是很好，考虑换成opencv的图像
+相似度比对的情况看看效果
+
+"""
 import tensorflow as tf
 import cv2
 import numpy as np

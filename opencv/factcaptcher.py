@@ -11,11 +11,15 @@
     3. 将图像保存
 
 注意图像大小是64 × 64
+
+关于图片相似度的算法，参考了这里
+http://www.jb51.net/article/83315.htm
+
 """
 
 import cv2
 import os
-import random
+import numpy as np
 
 out_dir = './faces'
 if not os.path.exists(out_dir):
@@ -66,9 +70,15 @@ while True:
     cv2.imshow("capture", image)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        image = image[frame_y + 2: frame_y + frame_w, frame_x: frame_x + frame_w]
         image = relight(image)
+
+        cv2.imshow("cut", image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
         # 需要使用截取范围对图像进行裁剪这样才行
         cv2.imwrite(out_dir + '/myface.jpg', image)
+
         break
 
 # 释放摄像头
@@ -76,3 +86,47 @@ cap.release()
 
 # 销毁所有的窗口
 cv2.destroyAllWindows()
+
+def Hamming_distance(hash1,hash2):
+ num = 0
+ for index in range(len(hash1)):
+  if hash1[index] != hash2[index]:
+   num += 1
+ return num
+
+def classify_pHash(image1,image2):
+ image1 = cv2.resize(image1, (32, 32))
+ image2 = cv2.resize(image2, (32, 32))
+ gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+ gray2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+ # 将灰度图转为浮点型，再进行dct变换
+ dct1 = cv2.dct(np.float32(gray1))
+ dct2 = cv2.dct(np.float32(gray2))
+ # 取左上角的8*8，这些代表图片的最低频率
+ # 这个操作等价于c++中利用opencv实现的掩码操作
+ # 在python中进行掩码操作，可以直接这样取出图像矩阵的某一部分
+ dct1_roi = dct1[0:8, 0:8]
+ dct2_roi = dct2[0:8, 0:8]
+ hash1 = getHash(dct1_roi)
+ hash2 = getHash(dct2_roi)
+ return Hamming_distance(hash1, hash2)
+
+
+# 输入灰度图，返回hash
+def getHash(image):
+    avreage = np.mean(image)
+    hash = []
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            if image[i, j] > avreage:
+                hash.append(1)
+            else:
+                hash.append(0)
+    return hash
+
+img1 = cv2.imread('faces/myface.jpg')
+cv2.imshow('img1', img1)
+img2 = cv2.imread('my_faces/2.jpg')
+cv2.imshow('img2', img2)
+degree = classify_pHash(img1, img2)
+print('相似度：', (64 - degree) / 64.0)
