@@ -11,11 +11,50 @@ def imageToHistogram(image):
     for i in range(0, x):
         listData[i] = 0
         for j in range(0, y):
-            if image[j, i] < 255:
-                listData[i] += 255
-            else:
-                listData[i] += 0
+           listData[i] += image[j, i]
 
     for i in range(0, x):
         listData[i] /= y
+
+    _max = max(listData)
+    _min = min(listData)
+
+    for i in range(0, x):
+        listData[i] = _max - listData[i]
+
+
+    return listData
+
+
+def imageToHistogramNp(image):
+    """
+    这个就是针对图像的横轴，每个横轴上的x，计算纵轴的y的累加
+    然后取累加平均值，方便处理。
+    为了保证图片中的文字可以被良好的切割开，做了底线处理。
+    按照最大最小值之间gap的10%作为标准，低于10%的值，都给0
+    这样，就可能通过0，清楚的区分出来各个数字（文字）正确的
+    位置了。
+    :param image: 传入的图像
+    :return:
+    """
+    x = image.shape[1]
+    y = image.shape[0]
+    print(x, y)
+
+    listData = image.sum(axis=0)
+
+    for i in range(x):
+        listData[i] /= y
+
+    _max = max(listData)
+    _min = min(listData)
+
+    gap = (_max - _min) * 0.10
+
+    listData = _max - listData
+
+    for i in range(x):
+        if listData[i] < gap:
+            listData[i] = 0
+
     return listData
