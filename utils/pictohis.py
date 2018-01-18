@@ -3,6 +3,11 @@
 import numpy as np
 
 def imageToHistogram(image):
+    """
+    基本方法做直方图，没有最低Gap处理
+    :param image:
+    :return:
+    """
     x = image.shape[1]
     y = image.shape[0]
     print(x, y)
@@ -41,10 +46,7 @@ def imageToHistogramNp(image):
     y = image.shape[0]
     print(x, y)
 
-    listData = image.sum(axis=0)
-
-    for i in range(x):
-        listData[i] /= y
+    listData = np.mean(image, axis=0)
 
     _max = max(listData)
     _min = min(listData)
